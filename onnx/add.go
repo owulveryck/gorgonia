@@ -58,7 +58,7 @@ func (a *Add) Constructor() func(g graph.WeightedDirected, n graph.Node) (interf
 			g.(graph.DirectedWeightedBuilder).SetWeightedEdge(g.(graph.DirectedWeightedBuilder).NewWeightedEdge(reshaped, x, 0))
 			// unlink n -> x
 			g.(graph.EdgeRemover).RemoveEdge(n.ID(), x.ID())
-			err := g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), n.(*engine.Node))
+			err := g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), reshaped.(*engine.Node))
 			if err != nil {
 				return nil, err
 			}
@@ -88,7 +88,7 @@ func (a *Add) Constructor() func(g graph.WeightedDirected, n graph.Node) (interf
 			g.(graph.DirectedWeightedBuilder).SetWeightedEdge(g.(graph.DirectedWeightedBuilder).NewWeightedEdge(reshaped, y, 0))
 			// unlink n -> x
 			g.(graph.EdgeRemover).RemoveEdge(n.ID(), y.ID())
-			err = g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), n.(*engine.Node))
+			err = g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), reshaped.(*engine.Node))
 			if err != nil {
 				return nil, err
 			}
@@ -114,7 +114,7 @@ func (a *Add) Constructor() func(g graph.WeightedDirected, n graph.Node) (interf
 			g.(graph.DirectedWeightedBuilder).SetWeightedEdge(g.(graph.DirectedWeightedBuilder).NewWeightedEdge(reshaped, y, 0))
 			// unlink n -> x
 			g.(graph.EdgeRemover).RemoveEdge(n.ID(), y.ID())
-			err = g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), n.(*engine.Node))
+			err = g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), reshaped.(*engine.Node))
 			if err != nil {
 				return nil, err
 			}
@@ -144,7 +144,7 @@ func (a *Add) Constructor() func(g graph.WeightedDirected, n graph.Node) (interf
 			g.(graph.DirectedWeightedBuilder).SetWeightedEdge(g.(graph.DirectedWeightedBuilder).NewWeightedEdge(reshaped, x, 0))
 			// unlink n -> x
 			g.(graph.EdgeRemover).RemoveEdge(n.ID(), x.ID())
-			err = g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), n.(*engine.Node))
+			err = g.(*engine.ExprGraph).ApplyOp(engine.Operation(engine.NewReshapeOperation(dims)), reshaped.(*engine.Node))
 			if err != nil {
 				return nil, err
 			}

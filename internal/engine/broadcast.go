@@ -112,7 +112,9 @@ func newBroadcastOperation(from byte, broadcastOn []int) Operation {
 		}
 		g.(graph.EdgeRemover).RemoveEdge(n.ID(), sizeFrom.ID())
 		repeatChildren := getOrderedNodes(g, n)
-		rep := newRepeatOp(broadcastOn, repeatChildren)
+		rep := newRepeatOp(
+			broadcastOn,
+			repeatChildren)
 		return rep, nil
 	}
 }
