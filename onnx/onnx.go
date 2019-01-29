@@ -24,6 +24,8 @@ func (g Graph) ONNXGetOperationFromName(s string) (interface{}, error) {
 	switch s {
 	case "Conv":
 		return NewConv(), nil
+	case "Relu":
+		return &Rectify{}, nil
 	case "Reshape":
 		return &Reshape{}, nil
 	case "Abs":

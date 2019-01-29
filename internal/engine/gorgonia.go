@@ -98,7 +98,6 @@ func (g *ExprGraph) NewTensor(t tensor.Dtype, dims int, opts ...NodeConsOpt) *No
 func (g *ExprGraph) NewConstant(v interface{}, opts ...NodeConsOpt) *Node {
 	var op ops.Op
 	var t hm.Type
-	var name string
 	var s tensor.Shape
 	var val value.Value
 
@@ -120,11 +119,18 @@ func (g *ExprGraph) NewConstant(v interface{}, opts ...NodeConsOpt) *Node {
 	}
 
 	n := g.NewNode().(*Node)
-	consOpts := []NodeConsOpt{WithName(name), WithOp(op), WithType(t), WithShape(s...), WithValue(val), WithName(fmt.Sprintf("%v", v))}
-	consOpts = append(consOpts, opts...)
-	for i := range opts {
-		opts[i](n)
-	}
+	n.name = fmt.Sprintf("%v", v)
+	n.op = op
+	n.t = t
+	n.shape = s
+	n.bind(val)
+	/*
+		consOpts := []NodeConsOpt{WithName(name), WithOp(op), WithType(t), WithShape(s...), WithValue(val), WithName(fmt.Sprintf("%v", v))}
+		consOpts = append(consOpts, opts...)
+		for i := range opts {
+			opts[i](n)
+		}
+	*/
 	return n
 }
 
@@ -142,9 +148,9 @@ func UniformRandomNode(g *ExprGraph, dt tensor.Dtype, low, high float64, shape .
 		t = constructor.MakeTensorType(s.Dims(), dt)
 	}
 	n := g.NewNode().(*Node)
-	WithType(t)(n)
-	WithOp(op)(n)
-	WithShape(shape...)(n)
+	n.t = t
+	n.op = op
+	n.shape = shape
 	return n
 }
 
@@ -162,9 +168,9 @@ func GaussianRandomNode(g *ExprGraph, dt tensor.Dtype, mean, stdev float64, shap
 		t = constructor.MakeTensorType(s.Dims(), dt)
 	}
 	n := g.NewNode().(*Node)
-	WithType(t)(n)
-	WithOp(op)(n)
-	WithShape(shape...)(n)
+	n.t = t
+	n.op = op
+	n.shape = shape
 	return n
 }
 
@@ -186,9 +192,9 @@ func BinomialRandomNode(g *ExprGraph, dt tensor.Dtype, trials, prob float64, sha
 	}
 
 	n := g.NewNode().(*Node)
-	WithType(t)(n)
-	WithOp(op)(n)
-	WithShape(shape...)(n)
+	n.t = t
+	n.op = op
+	n.shape = shape
 	return n
 }
 

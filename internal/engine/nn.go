@@ -107,6 +107,58 @@ func Dropout(x *Node, prob float64) (retVal *Node, err error) {
 	return HadamardDiv(retVal, c)
 }
 
+// NewRectifyOperation is a convenience function for creating rectified linear units activation functions.
+// This function uses >=, which is the canonical version. If you want to use >, you can create
+// your own by just following this.
+func NewRectifyOperation() Operation {
+	return func(g graph.WeightedDirected, n node.Node) (ops.Op, error) {
+		it := getOrderedChildren(g, n)
+		if it.Len() != 1 {
+			return nil, errors.New("relu: Unexpected number of children")
+		}
+		children := make([]*Node, it.Len())
+		for i := 0; it.Next(); i++ {
+			children[i] = it.Node().(*Node)
+		}
+		x := children[0]
+
+		var zero *Node
+		var dt tensor.Dtype
+		var err error
+
+		// which zero to use?
+		if dt, err = dtypeOf(n.(*Node).t); err != nil {
+			return nil, errors.Wrap(err, dtypeOfFail)
+		}
+		switch dt {
+		case Float64:
+			zero = zerof64(g.(*ExprGraph))
+		case Float32:
+			zero = zerof32(g.(*ExprGraph))
+		default:
+			return nil, errors.Errorf(nyiFail, "ReLu", dt)
+		}
+		g.(graph.DirectedWeightedBuilder).AddNode(zero)
+
+		gteNode := g.(graph.DirectedWeightedBuilder).NewNode().(*Node)
+		g.(graph.DirectedWeightedBuilder).AddNode(gteNode)
+		g.(graph.DirectedWeightedBuilder).SetWeightedEdge(
+			g.(graph.DirectedWeightedBuilder).NewWeightedEdge(n, gteNode, 1))
+		g.(graph.DirectedWeightedBuilder).SetWeightedEdge(
+			g.(graph.DirectedWeightedBuilder).NewWeightedEdge(gteNode, x, 0))
+		g.(graph.DirectedWeightedBuilder).SetWeightedEdge(
+			g.(graph.DirectedWeightedBuilder).NewWeightedEdge(gteNode, zero, 1))
+
+		err = g.(*ExprGraph).ApplyOp(NewGteOperation(nil, nil, false), gteNode)
+		if err != nil {
+			return nil, err
+		}
+
+		return NewHadamardProdOperation(nil, nil)(g, n)
+
+	}
+}
+
 // Rectify is a convenience function for creating rectified linear units activation functions.
 // This function uses >=, which is the canonical version. If you want to use >, you can create
 // your own by just following this.

@@ -397,7 +397,7 @@ func NewAddOperation(leftAxes, rightAxes []byte) Operation {
 	return func(g graph.WeightedDirected, n node.Node) (ops.Op, error) {
 		it := getOrderedChildren(g, n)
 		if it.Len() != 2 {
-			return nil, errors.New("Unexpected number of children")
+			return nil, errors.New("add: Unexpected number of children")
 		}
 		children := make([]*Node, it.Len())
 		for i := 0; it.Next(); i++ {
@@ -555,7 +555,7 @@ func NewHadamardProdOperation(leftAxes, rightAxes []byte) Operation {
 	return func(g graph.WeightedDirected, n node.Node) (ops.Op, error) {
 		it := getOrderedChildren(g, n)
 		if it.Len() != 2 {
-			return nil, errors.New("Unexpected number of children")
+			return nil, errors.New("HadamardProd: Unexpected number of children")
 		}
 		children := make([]*Node, it.Len())
 		for i := 0; it.Next(); i++ {
@@ -869,7 +869,7 @@ func NewGteOperation(leftAxes, rightAxes []byte, retSame bool) Operation {
 	return func(g graph.WeightedDirected, n node.Node) (ops.Op, error) {
 		it := getOrderedChildren(g, n)
 		if it.Len() != 2 {
-			return nil, errors.New("Unexpected number of children")
+			return nil, errors.New("gte: unexpected number of children")
 		}
 		children := make([]*Node, it.Len())
 		for i := 0; it.Next(); i++ {
