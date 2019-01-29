@@ -1,4 +1,4 @@
-package onnx 
+package onnx
 
 import (
 	"gonum.org/v1/gonum/graph"
@@ -207,23 +207,13 @@ func (a *Softplus) Constructor() func(g graph.WeightedDirected, n graph.Node) (i
 	}
 }
 
-// Add performs a pointwise add.
-type Add struct{}
-
-// Constructor to fulfil the interface ...
-func (a *Add) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewAddOperation(nil,nil)(g, n.(*engine.Node))
-	}
-}
-
 // Sub performs a pointwise sub.
 type Sub struct{}
 
 // Constructor to fulfil the interface ...
 func (a *Sub) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewSubOperation(nil,nil)(g, n.(*engine.Node))
+		return engine.NewSubOperation(nil, nil)(g, n.(*engine.Node))
 	}
 }
 
@@ -233,7 +223,7 @@ type HadamardProd struct{}
 // Constructor to fulfil the interface ...
 func (a *HadamardProd) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewHadamardProdOperation(nil,nil)(g, n.(*engine.Node))
+		return engine.NewHadamardProdOperation(nil, nil)(g, n.(*engine.Node))
 	}
 }
 
@@ -243,7 +233,7 @@ type HadamardDiv struct{}
 // Constructor to fulfil the interface ...
 func (a *HadamardDiv) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewHadamardDivOperation(nil,nil)(g, n.(*engine.Node))
+		return engine.NewHadamardDivOperation(nil, nil)(g, n.(*engine.Node))
 	}
 }
 
@@ -253,7 +243,7 @@ type Pow struct{}
 // Constructor to fulfil the interface ...
 func (a *Pow) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewPowOperation(nil,nil)(g, n.(*engine.Node))
+		return engine.NewPowOperation(nil, nil)(g, n.(*engine.Node))
 	}
 }
 
@@ -263,7 +253,7 @@ type Lt struct{}
 // Constructor to fulfil the interface ...
 func (a *Lt) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewLtOperation(nil,nil,false)(g, n.(*engine.Node))
+		return engine.NewLtOperation(nil, nil, false)(g, n.(*engine.Node))
 	}
 }
 
@@ -273,7 +263,7 @@ type Gt struct{}
 // Constructor to fulfil the interface ...
 func (a *Gt) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewGtOperation(nil,nil,false)(g, n.(*engine.Node))
+		return engine.NewGtOperation(nil, nil, false)(g, n.(*engine.Node))
 	}
 }
 
@@ -283,7 +273,7 @@ type Lte struct{}
 // Constructor to fulfil the interface ...
 func (a *Lte) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewLteOperation(nil,nil,false)(g, n.(*engine.Node))
+		return engine.NewLteOperation(nil, nil, false)(g, n.(*engine.Node))
 	}
 }
 
@@ -293,7 +283,7 @@ type Gte struct{}
 // Constructor to fulfil the interface ...
 func (a *Gte) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewGteOperation(nil,nil,false)(g, n.(*engine.Node))
+		return engine.NewGteOperation(nil, nil, false)(g, n.(*engine.Node))
 	}
 }
 
@@ -303,7 +293,7 @@ type Eq struct{}
 // Constructor to fulfil the interface ...
 func (a *Eq) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewEqOperation(nil,nil,false)(g, n.(*engine.Node))
+		return engine.NewEqOperation(nil, nil, false)(g, n.(*engine.Node))
 	}
 }
 
@@ -313,7 +303,6 @@ type Ne struct{}
 // Constructor to fulfil the interface ...
 func (a *Ne) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
 	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewNeOperation(nil,nil,false)(g, n.(*engine.Node))
+		return engine.NewNeOperation(nil, nil, false)(g, n.(*engine.Node))
 	}
 }
-
