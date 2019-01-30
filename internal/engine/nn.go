@@ -140,16 +140,25 @@ func NewRectifyOperation() Operation {
 		}
 		g.(graph.DirectedWeightedBuilder).AddNode(zero)
 
+		// initial statement: n -> x
+		nxW, ok := g.Weight(n.ID(), x.ID())
+		if !ok {
+			// Someone remove this edge ?
+			panic(err)
+		}
 		gteNode := g.(graph.DirectedWeightedBuilder).NewNode().(*Node)
 		g.(graph.DirectedWeightedBuilder).AddNode(gteNode)
+		// n -> gteNode
 		g.(graph.DirectedWeightedBuilder).SetWeightedEdge(
-			g.(graph.DirectedWeightedBuilder).NewWeightedEdge(n, gteNode, 1))
+			g.(graph.DirectedWeightedBuilder).NewWeightedEdge(n, gteNode, nxW+1))
+		// gteNode -> x
 		g.(graph.DirectedWeightedBuilder).SetWeightedEdge(
 			g.(graph.DirectedWeightedBuilder).NewWeightedEdge(gteNode, x, 0))
+		// gteNode -> zero
 		g.(graph.DirectedWeightedBuilder).SetWeightedEdge(
 			g.(graph.DirectedWeightedBuilder).NewWeightedEdge(gteNode, zero, 1))
 
-		err = g.(*ExprGraph).ApplyOp(NewGteOperation(nil, nil, false), gteNode)
+		err = g.(*ExprGraph).ApplyOp(NewGteOperation(nil, nil, true), gteNode)
 		if err != nil {
 			return nil, err
 		}
