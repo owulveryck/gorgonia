@@ -22,6 +22,8 @@ func NewGraph() *Graph {
 // ONNXGetOperationFromName ...
 func (g Graph) ONNXGetOperationFromName(s string) (interface{}, error) {
 	switch s {
+	case "MaxPool":
+		return NewMaxpool(), nil
 	case "Conv":
 		return NewConv(), nil
 	case "Relu":
@@ -72,7 +74,7 @@ func (g Graph) ONNXGetOperationFromName(s string) (interface{}, error) {
 		return &Add{}, nil
 	case "Sub":
 		return &Sub{}, nil
-	case "HadamardProd":
+	case "MatMul":
 		return &HadamardProd{}, nil
 	case "HadamardDiv":
 		return &HadamardDiv{}, nil

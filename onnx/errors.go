@@ -2,9 +2,12 @@ package onnx
 
 // ErrNotImplemented is fired when trying to call an operator that is not yet implemented
 type ErrNotImplemented struct {
-	Operator string
+	Operator       string
+	AttributeName  string
+	AttributeValue interface{}
+	Message        string
 }
 
 func (e *ErrNotImplemented) Error() string {
-	return "operato " + e.Operator + " not implemented"
+	return "operator" + e.Operator + " not implemented"
 }
