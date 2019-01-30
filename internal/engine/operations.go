@@ -47,6 +47,41 @@ func binOpNode(op ops.BinaryOp, a, b *Node) (retVal *Node, err error) {
 	return ApplyOp(op, a, b)
 }
 
+// NewMulOperation is the general handler for multiplication of nodes. It is extremely overloaded. Only use if you know what you're doing
+//
+// If any of the nodes are value.ScalarType, then it'll be redirected to HadamardProd() instead
+// If the nodes are both vectors (that is, have a shape of (x, 1) or (1, x)), then the operator used will be a vectorDot
+// If only one of the nodes is a vector, then the operator used will be a matrix-vector multiplication will be used, and most importantly,
+// a transpose will be used (when necessary)
+// If both nodes are matrices, then well, matrix multiplication will be done
+func NewMulOperation() Operation {
+	return func(g graph.WeightedDirected, n node.Node) (ops.Op, error) {
+		children := getOrderedNodes(g, n)
+		if len(children) != 2 {
+			return nil, errors.New("Mul: Unexpected number of children")
+		}
+		a := children[0]
+		b := children[1]
+		if a.IsScalar() || b.IsScalar() {
+			return NewHadamardProdOperation(nil, nil)(g, n)
+		}
+
+		switch {
+		case a.IsVector() && b.IsVector():
+			return linAlgBinOp{āBinaryOperator: vecDotOperator}, nil
+		case a.IsVector() && b.IsMatrix():
+			return linAlgBinOp{āBinaryOperator: matVecMulOperator, transA: true}, nil
+		case a.IsMatrix() && b.IsVector():
+			return linAlgBinOp{āBinaryOperator: matVecMulOperator}, nil
+		case a.IsMatrix() && b.IsMatrix():
+			return linAlgBinOp{āBinaryOperator: matMulOperator}, nil
+		default:
+			return nil, errors.Errorf(nyiFail, "Mul", fmt.Sprintf("a %v b %v", a.shape, b.shape))
+		}
+	}
+
+}
+
 // Mul is the general handler for multiplication of nodes. It is extremely overloaded. Only use if you know what you're doing
 //
 // If any of the nodes are value.ScalarType, then it'll be redirected to HadamardProd() instead

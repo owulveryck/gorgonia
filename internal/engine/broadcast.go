@@ -1,6 +1,8 @@
 package engine
 
 import (
+	"fmt"
+
 	"github.com/pkg/errors"
 	"gonum.org/v1/gonum/graph"
 	"gorgonia.org/gorgonia/node"
@@ -100,7 +102,7 @@ func newBroadcastOperation(from byte, broadcastOn []int) Operation {
 
 		for i, a := range broadcastOn {
 			size := g.(graph.DirectedWeightedBuilder).NewNode().(*Node)
-			size.name = n.(*Node).name + "_size"
+			size.name = fmt.Sprintf("%v_size_%v", n.(*Node).name, i)
 			g.(graph.DirectedWeightedBuilder).AddNode(size)
 			g.(graph.DirectedWeightedBuilder).SetWeightedEdge(builder.NewWeightedEdge(size, sizeFrom, float64(i+2)))
 			opSize := NewSizeOf(a)

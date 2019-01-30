@@ -75,7 +75,7 @@ func (g Graph) ONNXGetOperationFromName(s string) (interface{}, error) {
 	case "Sub":
 		return &Sub{}, nil
 	case "MatMul":
-		return &HadamardProd{}, nil
+		return &Mul{}, nil
 	case "HadamardDiv":
 		return &HadamardDiv{}, nil
 	case "Pow":

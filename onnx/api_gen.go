@@ -217,16 +217,6 @@ func (a *Sub) Constructor() func(g graph.WeightedDirected, n graph.Node) (interf
 	}
 }
 
-// HadamardProd performs a pointwise hadamardprod.
-type HadamardProd struct{}
-
-// Constructor to fulfil the interface ...
-func (a *HadamardProd) Constructor() func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-	return func(g graph.WeightedDirected, n graph.Node) (interface{}, error) {
-		return engine.NewHadamardProdOperation(nil, nil)(g, n.(*engine.Node))
-	}
-}
-
 // HadamardDiv performs a pointwise hadamarddiv.
 type HadamardDiv struct{}
 
