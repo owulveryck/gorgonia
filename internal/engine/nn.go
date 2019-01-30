@@ -168,36 +168,6 @@ func NewRectifyOperation() Operation {
 	}
 }
 
-// Rectify is a convenience function for creating rectified linear units activation functions.
-// This function uses >=, which is the canonical version. If you want to use >, you can create
-// your own by just following this.
-func Rectify(x *Node) (retVal *Node, err error) {
-	var zero *Node
-	var dt tensor.Dtype
-
-	// which zero to use?
-	if dt, err = dtypeOf(x.t); err != nil {
-		return nil, errors.Wrap(err, dtypeOfFail)
-	}
-	switch dt {
-	case Float64:
-		zero = zerof64(x.g)
-	case Float32:
-		zero = zerof32(x.g)
-	default:
-		return nil, errors.Errorf(nyiFail, "ReLu", dt)
-	}
-
-	cmp := newElemBinOp(gteOpType, x, zero)
-	cmp.retSame = true
-
-	if retVal, err = ApplyOp(cmp, x, zero); err != nil {
-		return nil, errors.Wrap(err, applyOpFail)
-	}
-
-	return HadamardProd(x, retVal)
-}
-
 // NewIm2Col converts a BCHW image block to columns. The kernel, pad and stride parameter must be shape of size 2, no more no less
 // This poor naming scheme clearly comes from matlab
 func NewIm2Col(kernel, pad, stride, dilation tensor.Shape) Operation {
@@ -381,6 +351,45 @@ func Conv1d(in, filter *Node, kernel, pad, stride, dilation int) (*Node, error) 
 	return Conv2d(in, filter, tensor.Shape{1, kernel}, []int{0, pad}, []int{1, stride}, []int{1, dilation})
 }
 */
+
+// NewMaxPool2DOperation ...
+func NewMaxPool2DOperation(kernel tensor.Shape, pad, stride []int) Operation {
+	return func(g graph.WeightedDirected, n node.Node) (ops.Op, error) {
+		it := getOrderedChildren(g, n)
+		if it.Len() != 1 {
+			return nil, errors.New("Maxpool2D: Unexpected number of children")
+		}
+		children := make([]*Node, it.Len())
+		for i := 0; it.Next(); i++ {
+			children[i] = it.Node().(*Node)
+		}
+		x := children[0]
+		xShape := x.Shape()
+		h, w := xShape[2], xShape[3]
+		kh, kw := kernel[0], kernel[1]
+		ph, pw := pad[0], pad[1]
+
+		// check shape
+		if xShape.Dims() != 4 {
+			return nil, errors.Errorf("Expected input to have a shape with dimension 4")
+		}
+		if kernel.Dims() != 2 {
+			return nil, errors.Errorf("Expected kernel to have a shape of dimension 2")
+		}
+
+		if h-kh == 0 && ph == 0 {
+			// error
+			return nil, errors.New("Impossible height/kernel/pad combination")
+		}
+
+		if w-kw == 0 && pw == 0 {
+			// error
+			return nil, errors.New("Impossible width/kernel/pad combination")
+		}
+
+		return newMaxPoolOp(xShape, kernel, pad, stride), nil
+	}
+}
 
 // MaxPool2D ...
 func MaxPool2D(x *Node, kernel tensor.Shape, pad, stride []int) (*Node, error) {
