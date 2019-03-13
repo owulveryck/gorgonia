@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/chewxy/hm"
-	"gorgonia.org/gorgonia/internal/factory"
+	"gorgonia.org/gorgonia/internal/value/factory"
 	"gorgonia.org/tensor"
 )
 

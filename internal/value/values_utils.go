@@ -5,7 +5,7 @@ import (
 
 	"github.com/chewxy/hm"
 	"github.com/pkg/errors"
-	"gorgonia.org/gorgonia/internal/factory"
+	"gorgonia.org/gorgonia/internal/value/factory"
 	"gorgonia.org/tensor"
 )
 
