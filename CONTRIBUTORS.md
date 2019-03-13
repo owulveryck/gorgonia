@@ -21,6 +21,7 @@
 * Jorge Landivar | @docmerlin
 * Yuanlin Lian | @alienchow
 * Bart Fokker | @barthr
+* Olivier Wulveryck | @owulveryck
 
 
 For more contributors, check out the [github contributors page](https://github.com/gorgonia/graphs/contributors)
