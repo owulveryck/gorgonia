@@ -28,11 +28,16 @@ func (g *ExprGraph) AddNode(n graph.Node) {
 // NewNode returns a new unique Node to be added to g. The Node's ID does not become valid in g until the Node is added to g.
 func (g *ExprGraph) NewNode() graph.Node {
 	// TODO: check if we need to borrow a node from a pool here
-	n := new(node)
+	n := new(Node)
 	n.DataOn = execution.CPU
 	n.id = g.w.NewNode().ID()
 	//n.fix()
 	return n
+}
+
+// NewVertex is a simple wrapper aroung NewNode
+func (g *ExprGraph) NewVertex() *Node {
+	return g.NewNode().(*Node)
 }
 
 // Node returns the node with the given ID if it exists in the graph, and nil otherwise.
