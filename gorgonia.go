@@ -4,7 +4,7 @@ import (
 	"gorgonia.org/gorgonia/internal/value"
 )
 
-// Mul ...
+// Mul returns the product a . b
 func (f *Formula) Mul(a, b value.Value) (value.Value, error) {
 	output, err := f.graphBuilder(a, b)
 	if err != nil {

@@ -23,7 +23,7 @@ type External interface {
 	Sync() chan struct{}
 }
 
-// ExecutionContext informs how an op should be executed
+// Context informs how an op should be executed
 type Context struct {
 	External
 	Device

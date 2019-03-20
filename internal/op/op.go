@@ -37,8 +37,6 @@ func DimSizersToShapes(ds []DimSizer) ([]tensor.Shape, error) {
 	return retVal, nil
 }
 
-// START_DEF_OP OMIT
-
 // An Op is a symbolic representation of an operation
 // Think of them as functions, taking an input (or multiple), and outputting something
 //

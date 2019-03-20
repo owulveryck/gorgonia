@@ -33,6 +33,9 @@ type Node struct {
 	id int64 // id is the ID at which the node is added to the graph
 }
 
+// Nodes ...
+type Nodes []Node
+
 // Value returns the valuse bound to the node. May return nil
 func (n *Node) Value() value.Value {
 	if dv, ok := n.BoundTo.(*value.DualValue); ok {
